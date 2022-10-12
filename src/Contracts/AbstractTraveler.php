@@ -2,35 +2,37 @@
 
 namespace Zaengle\Pipeline\Contracts;
 
+use Exception;
+
 /**
  * Class AbstractTraveler.
  */
-abstract class AbstractTraveler
+abstract class AbstractTraveler implements TravelerContract
 {
-    const TRAVELER_SUCCESS = 'ok';
+    public const TRAVELER_SUCCESS = 'ok';
 
-    const TRAVELER_FAIL = 'fail';
-
-    /**
-     * @var string
-     */
-    protected $status;
+    public const TRAVELER_FAIL = 'fail';
 
     /**
      * @var string
      */
-    protected $message = 'Traveler passed successfully.';
+    protected string $status = 'ok';
 
     /**
-     * @var \Exception
+     * @var string
      */
-    protected $exception;
+    protected string $message = 'Traveler passed successfully.';
+
+    /**
+     * @var Exception
+     */
+    protected Exception $exception;
 
     /**
      * @param  mixed  $status
      * @return AbstractTraveler
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->status = $status;
 
@@ -38,18 +40,18 @@ abstract class AbstractTraveler
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
     /**
-     * @param  mixed  $message
+     * @param  string  $message
      * @return AbstractTraveler
      */
-    public function setMessage($message)
+    public function setMessage(string $message): self
     {
         $this->message = $message;
 
@@ -57,18 +59,18 @@ abstract class AbstractTraveler
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
     /**
-     * @param  mixed  $exception
-     * @return AbstractTraveler
+     * @param  Exception  $exception
+     * @return self
      */
-    public function setException($exception)
+    public function setException(Exception $exception): self
     {
         $this->exception = $exception;
 
@@ -76,9 +78,9 @@ abstract class AbstractTraveler
     }
 
     /**
-     * @return mixed
+     * @return Exception
      */
-    public function getException()
+    public function getException(): Exception
     {
         return $this->exception;
     }
@@ -86,7 +88,7 @@ abstract class AbstractTraveler
     /**
      * @return bool
      */
-    public function passed()
+    public function passed(): bool
     {
         return $this->getStatus() === self::TRAVELER_SUCCESS;
     }

@@ -4,8 +4,8 @@ namespace Zaengle\Pipeline\Tests;
 
 use Illuminate\Support\Facades\DB;
 use Zaengle\Pipeline\Pipeline;
-use Zaengle\Pipeline\Tests\Pipes\FailedTestPipe;
-use Zaengle\Pipeline\Tests\Pipes\TestPipe;
+use Zaengle\Pipeline\Tests\Pipes\FailedTestAbstractPipe;
+use Zaengle\Pipeline\Tests\Pipes\TestAbstractPipe;
 
 /**
  * Class PipelineTest.
@@ -18,7 +18,7 @@ class PipelineTest extends PipelineTestCase
         $traveler = (new TestTraveler());
 
         $pipes = [
-            TestPipe::class,
+            TestAbstractPipe::class,
         ];
 
         $response = app(Pipeline::class)->pipe($traveler, $pipes);
@@ -34,7 +34,7 @@ class PipelineTest extends PipelineTestCase
         $traveler = (new TestTraveler());
 
         $pipes = [
-            FailedTestPipe::class,
+            FailedTestAbstractPipe::class,
         ];
 
         $response = app(Pipeline::class)->pipe($traveler, $pipes);
@@ -55,7 +55,7 @@ class PipelineTest extends PipelineTestCase
 
         app(Pipeline::class)->pipe(
       new TestTraveler(),
-      [TestPipe::class],
+      [TestAbstractPipe::class],
       true
     );
     }
@@ -71,7 +71,7 @@ class PipelineTest extends PipelineTestCase
 
         app(Pipeline::class)->pipe(
       new TestTraveler(),
-      [FailedTestPipe::class],
+      [FailedTestAbstractPipe::class],
       true
     );
     }
@@ -82,7 +82,7 @@ class PipelineTest extends PipelineTestCase
         $traveler = new \stdClass();
 
         $pipes = [
-            TestPipe::class,
+            TestAbstractPipe::class,
         ];
 
         $response = app(Pipeline::class)->pipe($traveler, $pipes);

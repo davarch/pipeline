@@ -119,19 +119,17 @@ Separate your business logic into appropriate "pipes," each of which should impl
 <?php
 
 use App\User;
-use Zaengle\Pipeline\Contracts\PipeInterface;
+use Zaengle\Pipeline\Contracts\AbstractPipe;
 
-class CreateUser implements PipeInterface {
-    public function handle($traveler, \Closure $next)
+class CreateUser extends AbstractPipe {
+    public function execute()
     {
-        $traveler->setUser(
+        $this->setUser(
             User::create([
-                'email' => $traveler->getRequest()->email,
-                'password' => $traveler()->getRequest()->password,
+                'email' => $this->getRequest()->email,
+                'password' => $this->getRequest()->password,
             ])
         );
-        
-        return $next($traveler);
     }
 }
 ```
@@ -140,21 +138,19 @@ class CreateUser implements PipeInterface {
 <?php
 
 use App\MailingService;
-use Zaengle\Pipeline\Contracts\PipeInterface;
+use Zaengle\Pipeline\Contracts\AbstractPipe;
 
-class HandleMailingList implements PipeInterface
+class HandleMailingList extends AbstractPipe
 {
-    public function handle($traveler, \Closure $next)
+    public function execute()
     {
-        if ($traveler->getRequest()->subscribe) {
-            MailingService::subscribe($traveler->getUser()->email);
+        if ($this->getRequest()->subscribe) {
+            MailingService::subscribe($this->getUser()->email);
             
-            $traveler->getUser()->update([
+            $this->getUser()->update([
                 'subscriber' => true,
             ]);
         }
-        
-        return $next($traveler);
     }
 }
 ```
